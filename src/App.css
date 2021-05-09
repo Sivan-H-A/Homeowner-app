@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   font-family: 'Architects Daughter', cursive;
+  min-height: 100vh;
 }
 
 .App-header {

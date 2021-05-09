@@ -1,10 +1,27 @@
+import { useState } from 'react';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
+import HomeownerNavbar from './components/HomeownerNavbar/HomeownerNavbar';
+import Homepage from './pages/HomePage/HomePage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 function App() {
+
+  const [activeUser, setActiveUser] = useState(null)
+  
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
+      <HashRouter>
+        {/* <HomeownerNavbar/> */}
+        <Switch>
+          <Route exact path="/" >
+            <HomeownerNavbar onLogout={() => setActiveUser(null)}/>
+            <Homepage/></Route>
+          {/* <Route exact path="/login"><LoginPage onLogin={user => setActiveUser(user)}/></Route>
+          <Route exact path="/signup"><SignupPage onLogin={user => setActiveUser(user)}/></Route> */}
+          <Route path="/"><NotFoundPage/></Route>          
+        </Switch>        
+      </HashRouter>
     </div>
   );
 }
