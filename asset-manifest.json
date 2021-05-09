@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/Homeowner-app/static/css/main.ec81acd4.chunk.css",
+    "main.js": "/Homeowner-app/static/js/main.719fe717.chunk.js",
+    "main.js.map": "/Homeowner-app/static/js/main.719fe717.chunk.js.map",
+    "runtime-main.js": "/Homeowner-app/static/js/runtime-main.be31c06a.js",
+    "runtime-main.js.map": "/Homeowner-app/static/js/runtime-main.be31c06a.js.map",
+    "static/css/2.800be05e.chunk.css": "/Homeowner-app/static/css/2.800be05e.chunk.css",
+    "static/js/2.71b8f2e4.chunk.js": "/Homeowner-app/static/js/2.71b8f2e4.chunk.js",
+    "static/js/2.71b8f2e4.chunk.js.map": "/Homeowner-app/static/js/2.71b8f2e4.chunk.js.map",
+    "static/js/3.27e8b6d4.chunk.js": "/Homeowner-app/static/js/3.27e8b6d4.chunk.js",
+    "static/js/3.27e8b6d4.chunk.js.map": "/Homeowner-app/static/js/3.27e8b6d4.chunk.js.map",
+    "index.html": "/Homeowner-app/index.html",
+    "static/css/2.800be05e.chunk.css.map": "/Homeowner-app/static/css/2.800be05e.chunk.css.map",
+    "static/css/main.ec81acd4.chunk.css.map": "/Homeowner-app/static/css/main.ec81acd4.chunk.css.map",
+    "static/js/2.71b8f2e4.chunk.js.LICENSE.txt": "/Homeowner-app/static/js/2.71b8f2e4.chunk.js.LICENSE.txt",
+    "static/media/background-image.fbce1056.jpg": "/Homeowner-app/static/media/background-image.fbce1056.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.be31c06a.js",
+    "static/css/2.800be05e.chunk.css",
+    "static/js/2.71b8f2e4.chunk.js",
+    "static/css/main.ec81acd4.chunk.css",
+    "static/js/main.719fe717.chunk.js"
+  ]
+}
