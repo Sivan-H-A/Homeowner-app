@@ -1,0 +1,73 @@
+:root {
+  --main-color: #151525;
+  --text-color:white;
+}
+.p-home{
+  padding-top:60px;
+  display: flex;
+  flex-direction: column;
+}
+.p-home-bg-img>img{
+  width: 100%;
+  height: 55vh;
+  object-fit: cover;
+}
+.p-home-header{
+  height: 35vh;
+  background-color: var(--main-color);
+  color: var(--text-color);
+  display: flex;
+
+}
+.p-home-title{
+  width: 70%;
+  padding:20px;
+}
+.p-login{
+  text-align: left;
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  box-shadow: 6px 4px 17px 2px rgba(0,0,0,0.69);
+  z-index: 1;
+  padding:20px 10px;
+  background-color: var(--text-color);
+  color:var(--main-color);
+}
+.p-login>form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+/* .p-home{
+    min-height: inherit;
+    background-image: url("/src/assets/background-image.jpg") ;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* opacity: 0.6; 
+    background-size: cover;
+    width: 100%;
+    }
+  .p-home-title{
+    position: fixed;
+    top: 10%;
+    left: 20%;
+  } */
+/* .p-home-bg-img{
+  position: relative;
+  top:60px;
+}
+.p-home-bg-img >img{
+  opacity: 0.8;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 90vh;
+}
+.p-home-title{
+  position: fixed;
+    top: 10%;
+    left: 20%;
+    color: rgb(1, 53, 1);
+} */
