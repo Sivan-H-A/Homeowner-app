@@ -13,19 +13,17 @@
   object-fit: cover;
 }
 .p-home-header{
-  height: 35vh;
   background-color: var(--main-color);
   color: var(--text-color);
   display: flex;
-
+  justify-content: space-between;
 }
 .p-home-title{
-  width: 70%;
-  padding:20px;
+  padding:50px;
 }
 .p-login{
   text-align: left;
-  position: fixed;
+  position: absolute;
   right: 20px;
   top: 100px;
   box-shadow: 6px 4px 17px 2px rgba(0,0,0,0.69);
@@ -38,6 +36,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+.p-home-footer{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.p-home-card{
+  border: none;
+  margin: 0 auto;
+  padding:30px;
+  text-align: left;
+}
+.p-home-card>img {
+  padding: 10px 0;
+   width: 100%;
 }
 /* .p-home{
     min-height: inherit;

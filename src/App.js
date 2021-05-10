@@ -4,6 +4,7 @@ import './App.css';
 import HomeownerNavbar from './components/HomeownerNavbar/HomeownerNavbar';
 import Homepage from './pages/HomePage/HomePage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import SignupPage from './pages/SignupPage/SignupPage';
 
 function App() {
 
@@ -17,8 +18,10 @@ function App() {
           <Route exact path="/" >
             <HomeownerNavbar onLogout={() => setActiveUser(null)}/>
             <Homepage/></Route>
-          {/* <Route exact path="/login"><LoginPage onLogin={user => setActiveUser(user)}/></Route>
-          <Route exact path="/signup"><SignupPage onLogin={user => setActiveUser(user)}/></Route> */}
+          {/* <Route exact path="/login"><LoginPage onLogin={user => setActiveUser(user)}/></Route>*/}
+          <Route exact path="/signup">
+            <HomeownerNavbar onLogout={() => setActiveUser(null)}/>
+            <SignupPage onLogin={user => setActiveUser(user)}/></Route> 
           <Route path="/"><NotFoundPage/></Route>          
         </Switch>        
       </HashRouter>
