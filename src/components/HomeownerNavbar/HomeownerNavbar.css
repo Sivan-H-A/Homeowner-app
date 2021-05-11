@@ -1,11 +1,12 @@
 .c-homeowner-navbar{
-    position:fixed;
-    width: 100%;
-    display: flex;
     padding: 10px 20px;
     font-size:large;
 }
-.c-homeowner-navbar-left{
-    position:fixed;
-    right: 20px;
-}
+
+
+@media (min-width: 992px) {
+    .c-homeowner-navbar-left{
+        position:fixed;
+        right: 20px;
+    }
+ }
