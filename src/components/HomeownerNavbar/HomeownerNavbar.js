@@ -11,10 +11,10 @@ export default function HomeownerNavbar({onLogout}) {
         <Navbar.Brand href="#/">HOA System</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="justify-content-start">
+            <Nav className="me-auto">
                 {activeUser ? <Nav.Link href="#">Messages</Nav.Link> : null}
             </Nav>
-            <Nav className="justify-content-end c-homeowner-navbar-left">
+            <Nav className="ms-auto">
                 {/* {!activeUser ? <Nav.Link href="#/login">Login</Nav.Link> : null} */}
                 {!activeUser ? <Nav.Link href="#/signup">Signup</Nav.Link> : null}
                 {activeUser ? <Nav.Link href="#" onClick={() => onLogout()}>Logout</Nav.Link> : null}

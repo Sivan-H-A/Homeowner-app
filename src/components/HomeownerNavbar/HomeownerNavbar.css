@@ -1,12 +1,4 @@
 .c-homeowner-navbar{
     padding: 10px 20px;
-    font-size:large;
+    font-size:larger;
 }
-
-
-@media (min-width: 992px) {
-    .c-homeowner-navbar-left{
-        position:fixed;
-        right: 20px;
-    }
- }
