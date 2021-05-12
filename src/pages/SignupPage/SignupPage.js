@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Alert, Button, Form, InputGroup, Col } from 'react-bootstrap'
+import { Alert, Button, Form, InputGroup, Col, Container, Row } from 'react-bootstrap'
 import './SignupPage.css'
 
-export default function SignupPage() {
+export default function SignupPage({onLogin}) {
     const [showSignupError, setShowSignupError] = useState(false);
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
@@ -15,27 +15,27 @@ export default function SignupPage() {
 
     async function signup(e) {
         e.preventDefault();
-        // validation code is missing here...
-
-        // const activeUser = await UserModel.signup(email, fname, lname, pwd);
-        // onLogin(activeUser);
+        // try {
+        //     const activeUser = await UserModel.login(email, pwd);
+        //     onLogin(activeUser);
+        // } catch (error) {
+        //     console.error('Error while logging in user', error);
+        //     // setShowInvalidLogin(true);
+        // }
     }
     return (
         <div className="p-signup">
 
-            <div className="p-signup-form col-md-7">
-                <h1>Create a Committee Member Account</h1>
+            <Container fluid className="p-signup-form col-md-7 col-sm-3">
+                <h4>Create a Committee Member Account</h4>
                 <p>Please fill in all the follwoing details:</p>
                 {showSignupError ? <Alert variant="danger">Error in Sign Up!</Alert> : null}
                 <Form onSubmit={signup}>
-                    
-                    <InputGroup className="mb-3">
-                        <InputGroup.Prepend>
-                            <InputGroup.Text>Full Name:</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control value={fname} placeholder="First name" onChange={e => setFname(e.target.value)}/>
-                        <Form.Control value={lname}placeholder="Last name" onChange={e => setLname(e.target.value)}/>
-                    </InputGroup>
+                    <Form.Group className="mb-3" controlId="formBasicFname">
+                        <Form.Label>Enter name: </Form.Label>                       
+                            <Form.Control className="mb-3" value={fname} placeholder="First name" onChange={e => setFname(e.target.value)}/>                        
+                            <Form.Control className="mb-3" value={lname} placeholder="Last name" onChange={e => setLname(e.target.value)}/>
+                        </Form.Group>              
                 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address: </Form.Label>
@@ -72,7 +72,7 @@ export default function SignupPage() {
                         Signup
                     </Button>
                 </Form>
-            </div>
+            </Container>
         </div>
     )
 }

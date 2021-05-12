@@ -24,7 +24,7 @@
   padding:50px;
 }
 .p-login{
-  min-width: 350px;
+  min-width: 300px;
   text-align: left;
   display: block;
   box-shadow: 6px 4px 17px 2px rgba(0,0,0,0.69); 
@@ -54,10 +54,6 @@
   align-items: center;
   padding: 10px;
   border: none;
-}
-
-@media (min-width: 768px) {
-
 }
 @media (min-width: 992px) {
   .p-home-footer>.card-deck{
