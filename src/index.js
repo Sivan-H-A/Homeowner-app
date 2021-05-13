@@ -4,6 +4,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Parse from 'parse'
+
+Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
+Parse.initialize(
+  '7DF9hNM7Lg0czEM0MSXeIyFeVLJjcQ6vLyHRylhg', // This is your Application ID
+  'bpB5hgraIysLbHEirYG55VLia5gcfaVZIt5aVkRg' // This is your Javascript key
+);
 
 ReactDOM.render(
   <React.StrictMode>
