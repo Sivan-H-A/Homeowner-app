@@ -25,7 +25,7 @@ export default function SignupPage({onLogin}) {
 
     async function signup(e) {
         e.preventDefault();
-        // let activeUser = null;
+        let activeUser = null;
         if(fname && lname && email && pwd && community && address && city){ 
             setShowSignupError(false);
             try {
