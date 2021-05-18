@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardDeck, CardGroup } from 'react-bootstrap'
+import { Card, CardDeck } from 'react-bootstrap'
 import message from '../../assets/messages-icon.png';
 import tenant from '../../assets/tenants-icon.png'
 import votes from '../../assets/voting-icon.png'
