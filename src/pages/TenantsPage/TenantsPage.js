@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Container, Accordion } from 'react-bootstrap';
+import { Container, Accordion, Alert } from 'react-bootstrap';
 import { Redirect } from 'react-router';
 import PageHeaderComponent from '../../components/PageHeaderComponent/PageHeaderComponent';
 import TenantsCardComponent from '../../components/TenantCardComponent/TenantCardComponent';
+import NewTenantModal from '../../components/NewTenantModal/NewTenantModal'
 import ActiveUserContext from '../../shared/ActiveUserContext';
 import BackendDataService from '../../utils/BackendDataService';
 import './TenantsPage.css';
@@ -11,6 +12,7 @@ export default function TenantsPage() {
     const [filterText, setFilterText] = useState("");
     const [show, setShow] = useState(false);
     const [tenants, setTenants] = useState([]);
+    const [addingTenantError, setAddingTenantError] = useState(false);
 
     const activeUser = useContext(ActiveUserContext);
     
@@ -48,6 +50,19 @@ export default function TenantsPage() {
         });
     }
 
+    async function handleNewTenant(fname,lname,email,apt, pwd){
+        try{
+            const tenant = await BackendDataService.addTenant(fname,lname,email,pwd,activeUser.community,apt);
+            setTenants(tenants.concat(tenant));
+            setAddingTenantError(false);
+        }
+        catch(e){
+            console.log(e);
+            setAddingTenantError(true);
+        }
+        setShow(false);
+    }
+
     return (
         <Container>
             <PageHeaderComponent placeholder="Filter:" 
@@ -57,11 +72,13 @@ export default function TenantsPage() {
                                 onFilterSelectChange=""
                                 action="Add Tenant"
                                 showModal={()=>setShow(true)}/>
-
+            {addingTenantError? <Alert variant="danger">Error in adding new tenant. Please try again.</Alert> : null}
             <Accordion defaultActiveKey="0">
                 {tenantsCards.length> 0 ? tenantsCards :null}
             </Accordion>
-           
+            <NewTenantModal show={show} 
+                            onClose={()=> setShow(false)}                                
+                            onCreate={handleNewTenant}/>
 
         </Container>
     )

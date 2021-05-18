@@ -54,9 +54,33 @@ async function getAllCommunityTenants(community){
     const tenants = results.map(parseTenant => new UserModel(parseTenant));
     return tenants;
 }
-
 function loadActiveUser(){
     UserModel.activeUser = Parse.User.current()? new UserModel(Parse.User.current()):null;
     return UserModel.activeUser;
 }
-export default  {login,signup, getAllCommunityTenants, addTenant, loadActiveUser, updateTenant } 
+async function addTenant(fname, lname, email, pwd, community, apt){
+    const user = new Parse.User()
+    user.set('username', email);
+    user.set('email', email);
+    user.set('fname', fname);
+    user.set('lname', lname);
+    user.set('password', pwd);
+    user.set('apartment',apt);
+    user.set('role', 2)
+    user.set('community', community);
+
+    const sessionToken = Parse.User.current().get("sessionToken");
+
+    const parseUser = await user.signUp(null, {
+        success: function (user) {
+            Parse.User.become(sessionToken).then(function (user) {
+            }, function (error) {
+                alert('error');
+            });
+         },
+            error: function (user, error) {                }
+    });
+    return new UserModel(parseUser);
+}
+
+export default  {login,signup, getAllCommunityTenants, loadActiveUser, addTenant } 
