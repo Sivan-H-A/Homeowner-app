@@ -34,7 +34,6 @@ async function signup(fname, lname, email, pwd, community, address, apt, city) {
         throw(e);
     }
 }
-
 async function addNewCommunity(community, address, city){
     const CommunityTable = Parse.Object.extend('Community');
     const newCommunity = new CommunityTable();
@@ -45,4 +44,19 @@ async function addNewCommunity(community, address, city){
     const communityItem = new CommunityModel(parseCommunity);
     return communityItem;
 }
-export default  {login,signup} 
+async function getAllCommunityTenants(community){
+    var query1 = new Parse.Query('User');
+    var query2 = new Parse.Query('User');
+    query1.equalTo('community', community);
+    query2.notEqualTo('role', 1);
+    const composeQuery = Parse.Query.and(query1, query2);
+    const results = await composeQuery.find();
+    const tenants = results.map(parseTenant => new UserModel(parseTenant));
+    return tenants;
+}
+
+function loadActiveUser(){
+    UserModel.activeUser = Parse.User.current()? new UserModel(Parse.User.current()):null;
+    return UserModel.activeUser;
+}
+export default  {login,signup, getAllCommunityTenants, addTenant, loadActiveUser, updateTenant } 
