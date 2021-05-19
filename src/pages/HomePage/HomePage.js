@@ -61,7 +61,7 @@ export default function Homepage({onLogin}) {
                 :null }
             </div>
             <div className="p-home-bg-img">
-                <img  className="p-home-img" src={image}></img>
+                <img  className="p-home-img" src={image} alt="Landing page img"></img>
             </div>
             <div className="p-home-footer">
                 <LandingPageCardComponent/>
