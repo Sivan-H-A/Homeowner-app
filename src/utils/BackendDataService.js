@@ -68,6 +68,11 @@ async function addTenant(fname, lname, email, pwd, community, apt){
     user.set('apartment',apt);
     user.set('role', 2)
     user.set('community', community);
+    const acl = new Parse.ACL();
+    acl.setPublicWriteAccess(true);
+    acl.setPublicReadAccess(true);
+
+    user.setACL(acl);
 
     const sessionToken = Parse.User.current().get("sessionToken");
 
@@ -78,9 +83,21 @@ async function addTenant(fname, lname, email, pwd, community, apt){
                 alert('error');
             });
          },
-            error: function (user, error) {                }
+            error: function (user, error) {console.error(error.message);}
     });
     return new UserModel(parseUser);
 }
-
-export default  {login,signup, getAllCommunityTenants, loadActiveUser, addTenant } 
+async function updateTenant(tenant,fname,lname,email,apt){ 
+    const sessionToken = Parse.User.current().get("sessionToken");
+    const query = new Parse.Query('User');
+    const user = await query.get(tenant.id);
+    user.set('username', email? email:tenant.email);
+    user.set('email', email? email:tenant.email);
+    user.set('fname', fname? fname : tenant.fname);
+    user.set('lname', lname? lname : tenant.lname);
+    user.set('apartment', apt? apt : tenant.apartment);
+    const parseUser = await user.save();
+    Parse.User.become(sessionToken);
+    return new UserModel(parseUser); 
+}
+export default  {login,signup, getAllCommunityTenants, loadActiveUser, addTenant, updateTenant } 

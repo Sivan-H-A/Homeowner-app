@@ -1,12 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import './NewTenantModal.css'
 export default function NewTeneatModal({ show, onClose, onCreate , tenant, onUpdate}) {
-    const [fname, setFname] = useState(tenant ? tenant.fname : "" );
-    const [lname, setLname] = useState(tenant ? tenant.lname : "" );
-    const [email, setEmail] = useState(tenant ? tenant.email : "" );
-    const [apt, setApt] = useState(tenant ? tenant.apartment : "" );
+
+    const [fname, setFname] = useState("" );
+    const [lname, setLname] = useState("" );
+    const [email, setEmail] = useState("" );
+    const [apt, setApt] = useState("" );
     const [pwd, setPwd] = useState("");
+    useEffect(() => {
+        if(tenant){
+            setFname(tenant.fname);
+            setLname(tenant.lname);
+            setEmail(tenant.email);
+            setApt(tenant.apartment);
+        }
+        
+    }, [tenant])
 
     function createTenant(){
         if(tenant){
@@ -25,9 +35,13 @@ export default function NewTeneatModal({ show, onClose, onCreate , tenant, onUpd
         setApt("");
         setPwd("");
     }
+    function onTenantClose(){
+        clearForm();
+        onClose();
+    }
 
     return (
-        <Modal show={show} onHide={onClose} className="c-new-tenant">
+        <Modal show={show} onHide={onTenantClose} className="c-new-tenant">
             <Modal.Header closeButton>
                 <Modal.Title className="text-center">{tenant ? "Update Tenant" :"New Tenant"}</Modal.Title>
             </Modal.Header>
@@ -68,7 +82,7 @@ export default function NewTeneatModal({ show, onClose, onCreate , tenant, onUpd
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
+                <Button variant="secondary" onClick={onTenantClose}>
                     Close
                 </Button>
                 <Button variant="primary" onClick={createTenant}>

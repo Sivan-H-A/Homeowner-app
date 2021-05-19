@@ -13,9 +13,10 @@ export default function TenantsPage() {
     const [show, setShow] = useState(false);
     const [tenants, setTenants] = useState([]);
     const [addingTenantError, setAddingTenantError] = useState(false);
+    const [updateTenantError, setUpdateTenantError] = useState(false);
+    const [selectedTenant, setSelectedTenant] = useState("");
 
     const activeUser = useContext(ActiveUserContext);
-    
     useEffect(() => {
         async function getAllTenants(){  
             const communityTenants = await BackendDataService.getAllCommunityTenants(activeUser.community);
@@ -46,7 +47,7 @@ export default function TenantsPage() {
             filteredTenants = filteredTenants.concat(tenants);
         }
         tenantsCards = filteredTenants.map((tenant, index) =>{
-            return <TenantsCardComponent tenant={tenant} index={index.toString()}/>           
+            return <TenantsCardComponent tenant={tenant} index={index.toString()} onUpdateTenant={onUpdateTenant} />           
         });
     }
 
@@ -63,6 +64,36 @@ export default function TenantsPage() {
         setShow(false);
     }
 
+    function onUpdateTenant(index){
+        currentTenant = filteredTenants[index];
+        setSelectedTenant(currentTenant);
+        setShow(true)
+    }
+    function onClose(){
+        setShow(false);
+        setSelectedTenant("");
+    }
+
+    async function handleUpdateTenant(fname,lname,email,apt){
+        if(fname || lname || email || apt){
+            try{     
+                const newTenant = await BackendDataService.updateTenant(selectedTenant, fname,lname,email,apt);
+                let index = tenants.findIndex(x=>x.id===selectedTenant.id);
+                let tempTenantArr = [];
+                tenants.splice(index,1,newTenant);
+                tempTenantArr = tempTenantArr.concat(tenants);
+                setTenants(tempTenantArr);
+                setUpdateTenantError(false);
+            }              
+            catch(e){
+                console.log(e);
+                setUpdateTenantError(true);
+            }
+        }
+        setShow(false);
+        setSelectedTenant("");
+    }
+
     return (
         <Container>
             <PageHeaderComponent placeholder="Filter:" 
@@ -73,12 +104,15 @@ export default function TenantsPage() {
                                 action="Add Tenant"
                                 showModal={()=>setShow(true)}/>
             {addingTenantError? <Alert variant="danger">Error in adding new tenant. Please try again.</Alert> : null}
+            {updateTenantError? <Alert variant="danger">Error in update a tenant. Please try again.</Alert> : null}
             <Accordion defaultActiveKey="0">
                 {tenantsCards.length> 0 ? tenantsCards :null}
             </Accordion>
             <NewTenantModal show={show} 
-                            onClose={()=> setShow(false)}                                
-                            onCreate={handleNewTenant}/>
+                            onClose={onClose}                   
+                            onCreate={handleNewTenant}
+                            tenant={selectedTenant} 
+                            onUpdate={handleUpdateTenant}/>
 
         </Container>
     )
