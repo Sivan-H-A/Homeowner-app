@@ -7,16 +7,20 @@ import NewTenantModal from '../../components/NewTenantModal/NewTenantModal'
 import ActiveUserContext from '../../shared/ActiveUserContext';
 import BackendDataService from '../../utils/BackendDataService';
 import './TenantsPage.css';
+import DeleteModalComponent from '../../components/DeleteModalComponent/DeleteModalComponent';
 
 export default function TenantsPage() {
+    const [tenants, setTenants] = useState([]);
+    const [selectedTenant, setSelectedTenant] = useState("");
     const [filterText, setFilterText] = useState("");
     const [show, setShow] = useState(false);
-    const [tenants, setTenants] = useState([]);
+    const [showDelete, setShowDelete] = useState(false)
     const [addingTenantError, setAddingTenantError] = useState(false);
     const [updateTenantError, setUpdateTenantError] = useState(false);
-    const [selectedTenant, setSelectedTenant] = useState("");
+    const [deleteTenantError, setDeletTenantError] = useState(false)
 
     const activeUser = useContext(ActiveUserContext);
+
     useEffect(() => {
         async function getAllTenants(){  
             const communityTenants = await BackendDataService.getAllCommunityTenants(activeUser.community);
@@ -47,8 +51,17 @@ export default function TenantsPage() {
             filteredTenants = filteredTenants.concat(tenants);
         }
         tenantsCards = filteredTenants.map((tenant, index) =>{
-            return <TenantsCardComponent tenant={tenant} index={index.toString()} onUpdateTenant={onUpdateTenant} />           
+            return <TenantsCardComponent key={index} tenant={tenant} 
+                                        index={index.toString()} 
+                                        onUpdateTenant={onUpdateTenant} 
+                                        onDeleteTenant={onDeleteTenant} />           
         });
+    }
+    
+    function onClose(){
+        setShow(false);
+        setShowDelete(false)
+        setSelectedTenant("");
     }
 
     async function handleNewTenant(fname,lname,email,apt, pwd){
@@ -68,10 +81,6 @@ export default function TenantsPage() {
         currentTenant = filteredTenants[index];
         setSelectedTenant(currentTenant);
         setShow(true)
-    }
-    function onClose(){
-        setShow(false);
-        setSelectedTenant("");
     }
 
     async function handleUpdateTenant(fname,lname,email,apt){
@@ -93,6 +102,27 @@ export default function TenantsPage() {
         setShow(false);
         setSelectedTenant("");
     }
+    
+    function onDeleteTenant(index){
+        currentTenant = filteredTenants[index];
+        setSelectedTenant(currentTenant);
+        setShowDelete(true);
+    }
+    
+    async function handleDeleteTenant(){
+        try{
+            BackendDataService.deleteTenant(selectedTenant);
+            const tempArr = tenants.filter(tenant=>tenant.id!==selectedTenant.id);
+            setTenants(tempArr);
+            setDeletTenantError(false);
+        }
+        catch(e){
+            console.log(e);
+            setDeletTenantError(true);
+        }
+        setShowDelete(false)
+        setSelectedTenant("");
+    }
 
     return (
         <Container>
@@ -104,7 +134,8 @@ export default function TenantsPage() {
                                 action="Add Tenant"
                                 showModal={()=>setShow(true)}/>
             {addingTenantError? <Alert variant="danger">Error in adding new tenant. Please try again.</Alert> : null}
-            {updateTenantError? <Alert variant="danger">Error in update a tenant. Please try again.</Alert> : null}
+            {updateTenantError? <Alert variant="danger">Error in updating a tenant. Please try again.</Alert> : null}
+            {deleteTenantError? <Alert variant="danger">Error in deleting a tenant. Please try again.</Alert> : null}
             <Accordion defaultActiveKey="0">
                 {tenantsCards.length> 0 ? tenantsCards :null}
             </Accordion>
@@ -113,6 +144,10 @@ export default function TenantsPage() {
                             onCreate={handleNewTenant}
                             tenant={selectedTenant} 
                             onUpdate={handleUpdateTenant}/>
+            <DeleteModalComponent show={showDelete}
+                                onClose={onClose}
+                                title="Tenant"
+                                onDelete={handleDeleteTenant}/>
 
         </Container>
     )

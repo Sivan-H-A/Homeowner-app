@@ -46,11 +46,8 @@ async function addNewCommunity(community, address, city){
 }
 async function getAllCommunityTenants(community){
     var query1 = new Parse.Query('User');
-    var query2 = new Parse.Query('User');
     query1.equalTo('community', community);
-    query2.notEqualTo('role', 1);
-    const composeQuery = Parse.Query.and(query1, query2);
-    const results = await composeQuery.find();
+    const results = await query1.find();
     const tenants = results.map(parseTenant => new UserModel(parseTenant));
     return tenants;
 }
@@ -75,16 +72,8 @@ async function addTenant(fname, lname, email, pwd, community, apt){
     user.setACL(acl);
 
     const sessionToken = Parse.User.current().get("sessionToken");
-
-    const parseUser = await user.signUp(null, {
-        success: function (user) {
-            Parse.User.become(sessionToken).then(function (user) {
-            }, function (error) {
-                alert('error');
-            });
-         },
-            error: function (user, error) {console.error(error.message);}
-    });
+    const parseUser = await user.signUp();
+    Parse.User.become(sessionToken);
     return new UserModel(parseUser);
 }
 async function updateTenant(tenant,fname,lname,email,apt){ 
@@ -100,4 +89,18 @@ async function updateTenant(tenant,fname,lname,email,apt){
     Parse.User.become(sessionToken);
     return new UserModel(parseUser); 
 }
-export default  {login,signup, getAllCommunityTenants, loadActiveUser, addTenant, updateTenant } 
+async function deleteTenant(tenant){
+    const query = new Parse.Query('User');
+    // Finds the user by its ID
+    const user = await query.get(tenant.id); 
+        // Invokes the "destroy" method to delete the user
+    user.destroy().then((response) => {
+        console.log('Deleted user', response);
+        return new UserModel(response);
+    }, (error) => {
+        console.error('Error while deleting user', error);
+        throw(error);
+    });
+    
+}
+export default  {login,signup, getAllCommunityTenants, loadActiveUser, addTenant, updateTenant, deleteTenant } 
