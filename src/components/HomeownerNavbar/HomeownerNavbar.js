@@ -20,7 +20,7 @@ export default function HomeownerNavbar({onLogout}) {
                     <Nav className="ml-auto">
                         {/* {!activeUser ? <Nav.Link href="#/login">Login</Nav.Link> : null} */}
                         {!activeUser ? <Nav.Link href="#/signup">Signup</Nav.Link> : null}
-                        {activeUser ? <Nav.Link eventKey="disabled" disabled>Welcome {activeUser.fname}</Nav.Link> : null}
+                        {activeUser ? <Nav.Link eventKey="disabled" disabled>Welcome {activeUser.fullName.split(" ")[0]}</Nav.Link> :null}
                         {activeUser ? <Nav.Link href="#" onClick={() => onLogout()}>Logout</Nav.Link> : null}
 
                     </Nav>

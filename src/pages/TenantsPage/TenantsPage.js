@@ -41,8 +41,7 @@ export default function TenantsPage() {
     {
         if(filterText){
             filteredTenants = tenants.filter(tenant=> {
-                return tenant.lname.includes(filterText) || 
-                        tenant.fname.includes(filterText) ||
+                return  tenant.fullName.includes(filterText) ||
                         tenant.email.includes(filterText)||
                         tenant.apartment.includes(filterText);
             });
@@ -64,9 +63,9 @@ export default function TenantsPage() {
         setSelectedTenant("");
     }
 
-    async function handleNewTenant(fname,lname,email,apt, pwd){
+    async function handleNewTenant(fullName,email,apt, pwd, img){
         try{
-            const tenant = await BackendDataService.addTenant(fname,lname,email,pwd,activeUser.community,apt);
+            const tenant = await BackendDataService.addTenant(fullName, email, pwd, activeUser.community, apt, img);
             setTenants(tenants.concat(tenant));
             setAddingTenantError(false);
         }
@@ -83,10 +82,13 @@ export default function TenantsPage() {
         setShow(true)
     }
 
-    async function handleUpdateTenant(fname,lname,email,apt){
-        if(fname || lname || email || apt){
+    async function handleUpdateTenant(fullName, email, apt, img){
+        if(fullName!==selectedTenant.fullName || 
+            email!==selectedTenant.email || 
+            apt!==selectedTenant.apartment || 
+            img!==selectedTenant.img){
             try{     
-                const newTenant = await BackendDataService.updateTenant(selectedTenant, fname,lname,email,apt);
+                const newTenant = await BackendDataService.updateTenant(selectedTenant, fullName, email, apt, img);
                 let index = tenants.findIndex(x=>x.id===selectedTenant.id);
                 let tempTenantArr = [];
                 tenants.splice(index,1,newTenant);
@@ -147,6 +149,7 @@ export default function TenantsPage() {
             <DeleteModalComponent show={showDelete}
                                 onClose={onClose}
                                 title="Tenant"
+                                name={selectedTenant.fullName}
                                 onDelete={handleDeleteTenant}/>
 
         </Container>

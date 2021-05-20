@@ -6,20 +6,26 @@ export default function TenantsCardComponent({tenant, index , onUpdateTenant, on
         <Card className="c-tenant">
             <Card.Header>
                 <Accordion.Toggle as={Button} variant="link" eventKey={index}>
-                    {/* <img src={images[item]}/> */}
-                    {tenant.fname +" "+ tenant.lname} 
+                    {tenant.fullName}{tenant.role===1? ", Admin":null}
                 </Accordion.Toggle>
             </Card.Header>
             <Accordion.Collapse eventKey={index}>
-                <Card.Body>
-                    <Card.Title>Name: {tenant.fname+" "+tenant.lname}</Card.Title>
-                    <Card.Text>Email: {tenant.email}</Card.Text>
-                    <Card.Text>Apt: {tenant.apartment}</Card.Text>
-                    <ButtonGroup className="mr-2" aria-label="Basic example">
-                        <Button onClick={()=>onUpdateTenant(index)}>Update</Button>
-                        {tenant.role!==1 ? <Button onClick={()=>onDeleteTenant(index)} variant="danger">Delete</Button> :null}
-                    </ButtonGroup>
-                </Card.Body>
+                <div className="c-tenant-info">
+                    <div className="c-tenant-img">
+                        <Card.Img variant="top" src={tenant.img} />
+                    </div>
+                    <Card.Body>
+                        <Card.Title>Name: {tenant.fullName}</Card.Title>
+                        <Card.Text>Email: {tenant.email}</Card.Text>
+                        <Card.Text>Apt: {tenant.apartment}</Card.Text>
+                    </Card.Body>
+                    <div className="c-tenant-button">
+                        <ButtonGroup className="mr-2" aria-label="Basic example">
+                            <Button onClick={()=>onUpdateTenant(index)}>Update</Button>
+                            {tenant.role!==1 ? <Button onClick={()=>onDeleteTenant(index)} variant="danger">Delete</Button> :null}
+                        </ButtonGroup>
+                    </div>
+                </div>
             </Accordion.Collapse>
         </Card>
     )

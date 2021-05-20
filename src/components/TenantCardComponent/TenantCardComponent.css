@@ -1,14 +1,37 @@
-.c-tenant > .collapse > .card-body{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-.c-tenant > .collapsing > .card-body{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
 .c-tenant{
     text-align: left;
     /* align-items: flex-start; */
+}
+.c-tenant-img{
+    width: 25%;
+    margin: 10px;
+}
+.c-tenant-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.c-tenant-button{
+    margin:10px;
+}
+@media (min-width: 576px) {
+    .c-tenant-info{
+        display: flex;
+        flex-direction: row;
+        align-items:center;
+    }
+    .c-tenant > .collapse >.c-tenant-info> .card-body{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .c-tenant > .collapsing >.c-tenant-info> .card-body{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

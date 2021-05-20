@@ -1,22 +1,27 @@
 import Parse from 'parse';
 import CommunityModel from '../models/CommunityModel';
 import UserModel from '../models/UserModel';
-
+import image from '../assets/person.png';
 async function login(email, pwd){
     const parseUser = await Parse.User.logIn(email, pwd);
     UserModel.activeUser = new UserModel(parseUser);
     return UserModel.activeUser;
 }
-async function signup(fname, lname, email, pwd, community, address, apt, city) {  
+async function signup(fullName, email, pwd, community, address, apt, city, img) {  
     const newCommunity = await addNewCommunity(community, address, city); 
 
     const user = new Parse.User()
     user.set('username', email);
     user.set('email', email);
-    user.set('fname', fname);
-    user.set('lname', lname);
+    user.set('fullName', fullName);
     user.set('password', pwd);
     user.set('apartment',apt);
+    if(img){
+        user.set('image',new Parse.File(img.name,img));
+    }
+    else{
+        user.set('image',{image});
+    }
     user.set('role', 1)
     user.set('community', newCommunity.parseCommunity);
 
@@ -55,13 +60,15 @@ function loadActiveUser(){
     UserModel.activeUser = Parse.User.current()? new UserModel(Parse.User.current()):null;
     return UserModel.activeUser;
 }
-async function addTenant(fname, lname, email, pwd, community, apt){
+async function addTenant(fullName, email, pwd, community, apt, img){
     const user = new Parse.User()
     user.set('username', email);
     user.set('email', email);
-    user.set('fname', fname);
-    user.set('lname', lname);
+    user.set('fullName', fullName);
     user.set('password', pwd);
+    if(img){
+        user.set('image',new Parse.File(img.name,img));
+    }
     user.set('apartment',apt);
     user.set('role', 2)
     user.set('community', community);
@@ -76,15 +83,17 @@ async function addTenant(fname, lname, email, pwd, community, apt){
     Parse.User.become(sessionToken);
     return new UserModel(parseUser);
 }
-async function updateTenant(tenant,fname,lname,email,apt){ 
+async function updateTenant(tenant,fullName,email,apt,img){ 
     const sessionToken = Parse.User.current().get("sessionToken");
     const query = new Parse.Query('User');
     const user = await query.get(tenant.id);
     user.set('username', email? email:tenant.email);
     user.set('email', email? email:tenant.email);
-    user.set('fname', fname? fname : tenant.fname);
-    user.set('lname', lname? lname : tenant.lname);
+    user.set('fullName', fullName? fullName : tenant.fullName);
     user.set('apartment', apt? apt : tenant.apartment);
+    if(typeof img === 'object'){
+        user.set('image', new Parse.File(img.name,img));
+    }
     const parseUser = await user.save();
     Parse.User.become(sessionToken);
     return new UserModel(parseUser); 

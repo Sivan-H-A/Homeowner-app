@@ -31,3 +31,7 @@
 .p-signup-form{
     width: 50%;
 }
+.p-signup-form img{
+        max-width: 100%;
+        margin-bottom: 10px;
+}

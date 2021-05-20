@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
-export default function DeleteModalComponent({show,onClose, title, onDelete}) {
+export default function DeleteModalComponent({show,onClose, title,name, onDelete}) {
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Delete {title}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to delete selected {title.toLowerCase()}</Modal.Body>
+            <Modal.Body>Are you sure you want to delete selected {title.toLowerCase()}: {name}</Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={onClose}>
                     Close
