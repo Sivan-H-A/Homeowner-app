@@ -2,6 +2,7 @@ import Parse from 'parse';
 import CommunityModel from '../models/CommunityModel';
 import UserModel from '../models/UserModel';
 import image from '../assets/person.png';
+
 async function login(email, pwd){
     const parseUser = await Parse.User.logIn(email, pwd);
     UserModel.activeUser = new UserModel(parseUser);

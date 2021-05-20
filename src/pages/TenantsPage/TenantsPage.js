@@ -8,6 +8,7 @@ import ActiveUserContext from '../../shared/ActiveUserContext';
 import BackendDataService from '../../utils/BackendDataService';
 import './TenantsPage.css';
 import DeleteModalComponent from '../../components/DeleteModalComponent/DeleteModalComponent';
+import CommunityModel from '../../models/CommunityModel';
 
 export default function TenantsPage() {
     const [tenants, setTenants] = useState([]);
@@ -18,7 +19,7 @@ export default function TenantsPage() {
     const [addingTenantError, setAddingTenantError] = useState(false);
     const [updateTenantError, setUpdateTenantError] = useState(false);
     const [deleteTenantError, setDeletTenantError] = useState(false)
-
+    const [community, setCommunity] = useState(null);
     const activeUser = useContext(ActiveUserContext);
 
     useEffect(() => {
@@ -28,6 +29,8 @@ export default function TenantsPage() {
         }   
         if (activeUser){
             getAllTenants();
+            const community = new CommunityModel(activeUser.community);
+            setCommunity(community);
         }
     }, [activeUser]);
     
@@ -128,6 +131,7 @@ export default function TenantsPage() {
 
     return (
         <Container>
+            <h2 className="p-tenant-header" >Building/Community: {community.name}</h2>
             <PageHeaderComponent placeholder="Filter:" 
                                 filterSelection=""
                                 sortBy=""
