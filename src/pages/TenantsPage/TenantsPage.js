@@ -19,7 +19,6 @@ export default function TenantsPage() {
     const [addingTenantError, setAddingTenantError] = useState(false);
     const [updateTenantError, setUpdateTenantError] = useState(false);
     const [deleteTenantError, setDeletTenantError] = useState(false)
-    const [community, setCommunity] = useState(null);
     const activeUser = useContext(ActiveUserContext);
 
     useEffect(() => {
@@ -29,8 +28,6 @@ export default function TenantsPage() {
         }   
         if (activeUser){
             getAllTenants();
-            const community = new CommunityModel(activeUser.community);
-            setCommunity(community);
         }
     }, [activeUser]);
     
@@ -40,6 +37,7 @@ export default function TenantsPage() {
     let filteredTenants=[];
     let tenantsCards=[];
     let currentTenant="";
+    const community = new CommunityModel(activeUser.community); 
     if(tenants && tenants.length>0)
     {
         if(filterText){
@@ -65,7 +63,16 @@ export default function TenantsPage() {
         setShowDelete(false)
         setSelectedTenant("");
     }
-
+    function onUpdateTenant(index){
+        currentTenant = filteredTenants[index];
+        setSelectedTenant(currentTenant);
+        setShow(true)
+    }
+    function onDeleteTenant(index){
+        currentTenant = filteredTenants[index];
+        setSelectedTenant(currentTenant);
+        setShowDelete(true);
+    }   
     async function handleNewTenant(fullName,email,apt, pwd, img){
         try{
             const tenant = await BackendDataService.addTenant(fullName, email, pwd, activeUser.community, apt, img);
@@ -78,13 +85,6 @@ export default function TenantsPage() {
         }
         setShow(false);
     }
-
-    function onUpdateTenant(index){
-        currentTenant = filteredTenants[index];
-        setSelectedTenant(currentTenant);
-        setShow(true)
-    }
-
     async function handleUpdateTenant(fullName, email, apt, img){
         if(fullName!==selectedTenant.fullName || 
             email!==selectedTenant.email || 
@@ -107,13 +107,6 @@ export default function TenantsPage() {
         setShow(false);
         setSelectedTenant("");
     }
-    
-    function onDeleteTenant(index){
-        currentTenant = filteredTenants[index];
-        setSelectedTenant(currentTenant);
-        setShowDelete(true);
-    }
-    
     async function handleDeleteTenant(){
         try{
             BackendDataService.deleteTenant(selectedTenant);
@@ -131,18 +124,15 @@ export default function TenantsPage() {
 
     return (
         <Container>
-            <h2 className="p-tenant-header" >Building/Community: {community.name}</h2>
-            <PageHeaderComponent placeholder="Filter:" 
-                                filterSelection=""
-                                sortBy=""
+            <h2 className="p-tenant-header" >Tenants for building: {community? community.name:""}</h2>
+            <PageHeaderComponent placeholder="Filter by name/email/apartment:" 
                                 onFilterChange={(data)=>setFilterText(data)} 
-                                onFilterSelectChange=""
                                 action="Add Tenant"
                                 showModal={()=>setShow(true)}/>
             {addingTenantError? <Alert variant="danger">Error in adding new tenant. Please try again.</Alert> : null}
             {updateTenantError? <Alert variant="danger">Error in updating a tenant. Please try again.</Alert> : null}
             {deleteTenantError? <Alert variant="danger">Error in deleting a tenant. Please try again.</Alert> : null}
-            <Accordion defaultActiveKey="0">
+            <Accordion>
                 {tenantsCards.length> 0 ? tenantsCards :null}
             </Accordion>
             <NewTenantModal show={show} 

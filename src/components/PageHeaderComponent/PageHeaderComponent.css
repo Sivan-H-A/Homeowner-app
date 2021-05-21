@@ -9,3 +9,6 @@
     text-align: end;
     margin:20px 0;
 }
+.c-page-header>.row>.c-header-sort>label{
+    margin-right: 10px;
+}

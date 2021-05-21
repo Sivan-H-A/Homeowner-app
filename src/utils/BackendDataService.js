@@ -2,6 +2,7 @@ import Parse from 'parse';
 import CommunityModel from '../models/CommunityModel';
 import UserModel from '../models/UserModel';
 import image from '../assets/person.png';
+import MessageModel from '../models/MessageModel';
 
 async function login(email, pwd){
     const parseUser = await Parse.User.logIn(email, pwd);
@@ -51,9 +52,9 @@ async function addNewCommunity(community, address, city){
     return communityItem;
 }
 async function getAllCommunityTenants(community){
-    var query1 = new Parse.Query('User');
-    query1.equalTo('community', community);
-    const results = await query1.find();
+    var query = new Parse.Query('User');
+    query.equalTo('community', community);
+    const results = await query.find();
     const tenants = results.map(parseTenant => new UserModel(parseTenant));
     return tenants;
 }
@@ -110,7 +111,90 @@ async function deleteTenant(tenant){
     }, (error) => {
         console.error('Error while deleting user', error);
         throw(error);
-    });
-    
+    });   
 }
-export default  {login,signup, getAllCommunityTenants, loadActiveUser, addTenant, updateTenant, deleteTenant } 
+async function getAllCommunityMessages(community){
+    const query = new Parse.Query('Message');
+    query.equalTo('community', community);
+    const results = await query.find();
+    const messages = results.map(parseMessage => new MessageModel(parseMessage));
+    return messages;
+}
+async function addNewMessage(title,details,priority,img){
+    const Message = Parse.Object.extend('Message');
+    const newMessage = new Message();
+    
+    newMessage.set('createdBy', Parse.User.current());
+    newMessage.set('title', title);
+    newMessage.set('details', details);
+    newMessage.set('priority', priority);
+    if(img){
+        newMessage.set('image', new Parse.File(img.name, img));
+    }
+    newMessage.set('community', UserModel.activeUser.community);  
+    newMessage.set('readBy',[Parse.User.current().id]);
+  
+    const parseMessage = await newMessage.save();
+
+    return new MessageModel(parseMessage);
+}
+async function addNewComment(message,comment){
+    const query = new Parse.Query('Message');
+    const parseMessage = await query.get(message.id);
+    let messageComments=[];
+    // here you put the objectId that you want to update
+    if(message.comments && message.comments.length>0){
+        messageComments = messageComments.concat(message.comments);
+        messageComments.push(comment);
+        //add
+    }else{
+        messageComments.push(comment);
+    }
+    parseMessage.set("comments", messageComments);
+    
+    const newParseMessage = await parseMessage.save(); 
+
+    return new MessageModel(newParseMessage);
+}
+async function updateMessage(message, title, details, priority, img){
+    const query = new Parse.Query('Message');
+    const parseMessage = await query.get(message.id);
+    parseMessage.set('title', title);
+    parseMessage.set('details', details);
+    parseMessage.set('priority', priority);
+    if(typeof img === 'object'){
+        parseMessage.set('image', new Parse.File(img.name,img));
+    }   
+    const newParseMessage = await parseMessage.save();
+    return new MessageModel(newParseMessage);
+}
+async function deleteMessage(message){
+    const query = new Parse.Query('Message');
+    // Finds the user by its ID
+    const parseMessage = await query.get(message.id); 
+        // Invokes the "destroy" method to delete the user
+    parseMessage.destroy().then((response) => {
+        console.log('Deleted user', response);
+    }, (error) => {
+        console.error('Error while deleting user', error);
+        throw(error);
+    });   
+}
+async function addUserReadMessage(message, userId){
+    const query = new Parse.Query('Message');
+    // Finds the user by its ID
+    const parseMessage = await query.get(message.id);
+    if(message && message.readBy){
+        parseMessage.set('readBy', message.readBy.concat(userId));
+    }else{
+        parseMessage.set('readBy', [userId]);
+    }   
+    const newParseMessage = await parseMessage.save();
+    return new MessageModel(newParseMessage);
+}
+export default  {login,signup, getAllCommunityTenants, 
+                loadActiveUser, addTenant, 
+                updateTenant, deleteTenant, 
+                getAllCommunityMessages, addNewMessage,
+                addNewComment,updateMessage,
+                deleteMessage, addUserReadMessage } 

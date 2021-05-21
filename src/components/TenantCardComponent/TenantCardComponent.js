@@ -6,7 +6,7 @@ export default function TenantsCardComponent({tenant, index , onUpdateTenant, on
         <Card className="c-tenant">
             <Card.Header>
                 <Accordion.Toggle as={Button} variant="link" eventKey={index}>
-                    {tenant.fullName}{tenant.role===1? ", Admin":null}
+                    <h5>{tenant.fullName}{tenant.role===1? ", Admin":null}</h5>
                 </Accordion.Toggle>
             </Card.Header>
             <Accordion.Collapse eventKey={index}>

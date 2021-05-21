@@ -4,7 +4,6 @@ import './NewTenantModal.css'
 export default function NewTeneatModal({ show, onClose, onCreate , tenant, onUpdate}) {
 
     const [fullName, setFullName] = useState("" );
-    const [lname, setLname] = useState("" );
     const [email, setEmail] = useState("" );
     const [apt, setApt] = useState("" );
     const [pwd, setPwd] = useState("");
