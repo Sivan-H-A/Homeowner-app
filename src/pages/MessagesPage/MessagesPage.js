@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Accordion, Alert, Container } from 'react-bootstrap';
+import { Accordion, Alert, Button, Container, Spinner } from 'react-bootstrap';
 import { Redirect } from 'react-router';
 import DeleteModalComponent from '../../components/DeleteModalComponent/DeleteModalComponent';
 import MessageCardComponent from '../../components/MessageCardComponent/MessageCardComponent';
@@ -39,7 +39,7 @@ export default function MessagesPage() {
     if(!activeUser){
         return <Redirect to ="/"/>
     }
-
+    let loading=true
     const filterSelection= ["filter by priority:","Info","Important"]
     const sortBySelection=["Date","Priority"];
     const community = new CommunityModel(activeUser.community); 
@@ -79,6 +79,7 @@ export default function MessagesPage() {
                                         onNewCommentCreate={handleNewComment}
                                         onReadMessage={handleReadMessage}/>           
         });
+        loading=false;
     }
 
     function onClose(){
@@ -168,8 +169,8 @@ export default function MessagesPage() {
         setMessages(tempMessageArr);
     }
     return (
-        <Container>
-            <h2 className="p-message-header">Messages for building: {community? community.name:""}  </h2>
+        <Container className="p-messages">
+            <h2>Messages for building: {community? community.name:""}  </h2>
             <PageHeaderComponent placeholder="Filter by Text in Title or Details"
                                 filterSelection={filterSelection}
                                 sortBy={sortBySelection} 
@@ -182,9 +183,20 @@ export default function MessagesPage() {
             {newCommentError? <Alert variant="danger">Error in adding new comment. Please try again.</Alert> : null}
             {updateMessageError? <Alert variant="danger">Error in updating the selected message. Please try again.</Alert> :null}
             {deleteMessageError? <Alert variant="danger">Error in deleting the selected message. Please try again.</Alert> :null}
-            <Accordion>
-                {MessageCards && MessageCards.length>0 ? MessageCards :null }
-            </Accordion>
+            {loading? 
+                <Button variant="primary" disabled>
+                    <Spinner
+                    as="span"
+                    animation="border"
+                    role="status"
+                    aria-hidden="true"
+                    />
+                    <span className="sr-only">Signing...</span>
+                </Button>
+                :<Accordion>
+                    {MessageCards && MessageCards.length>0 ? MessageCards :null }
+                </Accordion>
+            }
             <NewMessageModal show={show}
                             onClose={onClose}
                             onCreate={handleNewMessage}

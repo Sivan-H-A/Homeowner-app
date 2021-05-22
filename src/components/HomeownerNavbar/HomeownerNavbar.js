@@ -4,9 +4,8 @@ import ActiveUserContext from '../../shared/ActiveUserContext'
 import './HomeownerNavbar.css'
 import { BsBuilding } from 'react-icons/bs';
 import { GiHand } from 'react-icons/gi'
-import { IoIosPeople } from 'react-icons/io'
+import { IoIosPeople , IoIosLogOut, IoIosCreate} from 'react-icons/io'
 import { SiGooglemessages } from 'react-icons/si'
-
 export default function HomeownerNavbar({onLogout}) {
     const activeUser = useContext(ActiveUserContext);
 
@@ -21,10 +20,10 @@ export default function HomeownerNavbar({onLogout}) {
                         {activeUser ? <Nav.Link href="#/messages">Messages<SiGooglemessages/></Nav.Link> : null}
                     </Nav>
                     <Nav className="ml-auto">
-                        {!activeUser ? <Nav.Link href="#/signup">Signup</Nav.Link> : null}
+                        {!activeUser ? <Nav.Link href="#/signup">Signup<IoIosCreate/></Nav.Link> : null}
                         {activeUser ? <Nav.Link eventKey="disabled" disabled>Welcome 
                             {` ${activeUser.fullName? activeUser.fullName.split(" ")[0]:""}`}<GiHand /> </Nav.Link> :null}
-                        {activeUser ? <Nav.Link href="#" onClick={() => onLogout()}>Logout</Nav.Link> : null}
+                        {activeUser ? <Nav.Link href="#" onClick={() => onLogout()}>Logout<IoIosLogOut/></Nav.Link> : null}
 
                     </Nav>
                 </Navbar.Collapse>

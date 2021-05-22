@@ -2,6 +2,7 @@
   text-align: center;
   font-family: 'Architects Daughter', cursive;
   min-height: 100vh;
+  background-image:linear-gradient( transparent,skyblue);
 }
 
 .App-header {

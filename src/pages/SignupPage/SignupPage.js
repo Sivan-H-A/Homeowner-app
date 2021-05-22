@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { Alert, Button, Form, Col, Container, Row, Image } from 'react-bootstrap';
+import { Alert, Button, Form, Col, Container, Row, Image, Spinner } from 'react-bootstrap';
 import BackendDataService from '../../utils/BackendDataService';
 import ActiveUserContext from '../../shared/ActiveUserContext'
 import './SignupPage.css';
 import { Redirect } from 'react-router';
-
+import {IoIosCreate} from 'react-icons/io';
 export default function SignupPage({onLogin}) {
     const [showSignupError, setShowSignupError] = useState(false);
     const [showInvalidLogin, setShowInvalidLogin] = useState(false);
@@ -16,6 +16,7 @@ export default function SignupPage({onLogin}) {
     const [address, setAddress] = useState("");
     const [apt, setApt] = useState("");
     const [city, setCity] = useState("");
+    const [signingUp, setSigningUp] = useState(false);
     const activeUser = useContext(ActiveUserContext);
 
     if (activeUser) {
@@ -24,6 +25,7 @@ export default function SignupPage({onLogin}) {
 
     async function signup(e) {
         e.preventDefault();
+        setSigningUp(true);
         let activeUser = null;
         if(fullName && email && pwd && community && address && city){ 
             setShowSignupError(false);
@@ -34,10 +36,12 @@ export default function SignupPage({onLogin}) {
             } catch (error) {
                 console.error('Error while logging in user', error);
                 setShowInvalidLogin(true);
+                setSigningUp(false);
             }
         }
         else{
             setShowSignupError(true);
+            setSigningUp(false);
         }
     }
 
@@ -56,7 +60,17 @@ export default function SignupPage({onLogin}) {
                 <p>Please fill in all the follwoing details:</p>
                 {showSignupError ? <Alert variant="danger">Missing information! Fill in all details.</Alert> : null}
                 {showInvalidLogin ? <Alert variant="danger">Error in Sign Up!</Alert> : null}
-                <Form onSubmit={signup}>
+                {signingUp ?
+                <Button variant="primary" disabled>
+                    <Spinner
+                    as="span"
+                    animation="border"
+                    role="status"
+                    aria-hidden="true"
+                    />
+                    <span className="sr-only">Signing...</span>
+                </Button>
+                : <Form onSubmit={signup}>
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Enter name: </Form.Label>                       
                         <Form.Control type="text" value={fullName} 
@@ -80,7 +94,7 @@ export default function SignupPage({onLogin}) {
                 
                     <Form.Group className="mb-3" controlId="formBasicBuilding">
                         <Form.Label>Building/Conmmunity Name</Form.Label>
-                        <Form.Control type="text" value={community} onChange={e => setCommunity(e.target.value)} />
+                        <Form.Control type="text" value={community} onChange={e => setCommunity(e.target.value)} placeholder="Building/Community name" />
                     </Form.Group> 
                     <Row className="mb-3">
                         <Col sm={6}>
@@ -104,9 +118,9 @@ export default function SignupPage({onLogin}) {
                     </Form.Group>
                     <Image src={img ? URL.createObjectURL(img) : ""}/> 
                     <Button className="mb-3" variant="success" type="submit" block>
-                        Signup
+                        Signup<IoIosCreate/>
                     </Button>
-                </Form>
+                </Form>}
             </Container>
         </div>
     )

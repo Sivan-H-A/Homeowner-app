@@ -1,4 +1,7 @@
-.p-tenant-header{
-    margin-top: 100px;
+.p-tenant{
+    margin-top: 65px;
     margin-bottom: 30px;
+}
+.p-tenant>h2{
+    background-image: linear-gradient(45deg, #0069d9, transparent);
 }

@@ -6,7 +6,7 @@ import { Alert, Button, Container, Form } from 'react-bootstrap';
 import ActiveUserContext from '../../shared/ActiveUserContext';
 import { Link, Redirect } from 'react-router-dom';
 import BackendDataService from '../../utils/BackendDataService';
-
+import { IoIosLogIn } from 'react-icons/io';
 export default function Homepage({onLogin}) {
     const [showInvalidLogin, setShowInvalidLogin] = useState(false);
     const [email, setEmail] = useState("");
@@ -54,7 +54,7 @@ export default function Homepage({onLogin}) {
                                     value={pwd} onChange={e => setPwd(e.target.value)} />
                             </Form.Group>
                             <Button  className="mb-3" variant="primary" type="submit" block>
-                                Login
+                                Login <IoIosLogIn/>
                             </Button>
                         </Form>
                     </div>

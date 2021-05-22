@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Container, Accordion, Alert } from 'react-bootstrap';
+import { Container, Accordion, Alert, Button, Spinner } from 'react-bootstrap';
 import { Redirect } from 'react-router';
 import PageHeaderComponent from '../../components/PageHeaderComponent/PageHeaderComponent';
 import TenantsCardComponent from '../../components/TenantCardComponent/TenantCardComponent';
@@ -20,7 +20,6 @@ export default function TenantsPage() {
     const [updateTenantError, setUpdateTenantError] = useState(false);
     const [deleteTenantError, setDeletTenantError] = useState(false)
     const activeUser = useContext(ActiveUserContext);
-
     useEffect(() => {
         async function getAllTenants(){  
             const communityTenants = await BackendDataService.getAllCommunityTenants(activeUser.community);
@@ -34,6 +33,7 @@ export default function TenantsPage() {
     if(!activeUser || activeUser.role!==1){
         return <Redirect to= '/' />
     }
+    let loading = true;
     let filteredTenants=[];
     let tenantsCards=[];
     let currentTenant="";
@@ -56,6 +56,7 @@ export default function TenantsPage() {
                                         onUpdateTenant={onUpdateTenant} 
                                         onDeleteTenant={onDeleteTenant} />           
         });
+        loading = false;
     }
     
     function onClose(){
@@ -123,8 +124,8 @@ export default function TenantsPage() {
     }
 
     return (
-        <Container>
-            <h2 className="p-tenant-header" >Tenants for building: {community? community.name:""}</h2>
+        <Container className="p-tenant">
+            <h2>Tenants for building: {community? community.name:""}</h2>
             <PageHeaderComponent placeholder="Filter by name/email/apartment:" 
                                 onFilterChange={(data)=>setFilterText(data)} 
                                 action="Add Tenant"
@@ -132,9 +133,20 @@ export default function TenantsPage() {
             {addingTenantError? <Alert variant="danger">Error in adding new tenant. Please try again.</Alert> : null}
             {updateTenantError? <Alert variant="danger">Error in updating a tenant. Please try again.</Alert> : null}
             {deleteTenantError? <Alert variant="danger">Error in deleting a tenant. Please try again.</Alert> : null}
-            <Accordion>
-                {tenantsCards.length> 0 ? tenantsCards :null}
-            </Accordion>
+            {loading ? 
+                <Button variant="primary" disabled>
+                    <Spinner
+                    as="span"
+                    animation="border"
+                    role="status"
+                    aria-hidden="true"
+                    />
+                    <span className="sr-only">Signing...</span>
+                </Button>
+                : <Accordion>
+                    {tenantsCards.length> 0 ? tenantsCards :null}
+                </Accordion>
+            }
             <NewTenantModal show={show} 
                             onClose={onClose}                   
                             onCreate={handleNewTenant}
