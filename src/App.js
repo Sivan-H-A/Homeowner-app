@@ -19,7 +19,9 @@ function App() {
     <ActiveUserContext.Provider value={activeUser}>
       <div className="App">
         <HashRouter>
-          <HomeownerNavbar onLogout={() => setActiveUser(null)}/>
+          <HomeownerNavbar onLogout={() => {setActiveUser(null); 
+                                            localStorage.clear();
+                                          }}/>
           <Switch>
             <Route exact path="/"><Homepage onLogin={user => setActiveUser(user)} /></Route>
             <Route exact path="/tenants"><TenantsPage/></Route>

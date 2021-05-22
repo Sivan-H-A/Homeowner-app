@@ -5,8 +5,23 @@ import image from '../assets/person.png';
 import MessageModel from '../models/MessageModel';
 
 async function login(email, pwd){
-    const parseUser = await Parse.User.logIn(email, pwd);
-    UserModel.activeUser = new UserModel(parseUser);
+    if(email && pwd){
+        const parseUser = await Parse.User.logIn(email, pwd);
+        UserModel.activeUser = new UserModel(parseUser);
+    }
+    else{
+        UserModel.activeUser = null;
+        console.error("cannot login - missing credentials")
+    }
+    return UserModel.activeUser;
+}
+function loadActiveUser(){
+    if(Parse.User.current()){
+        UserModel.activeUser = new UserModel(Parse.User.current());
+    }
+    else{
+        UserModel.activeUser =null;
+    }
     return UserModel.activeUser;
 }
 async function signup(fullName, email, pwd, community, address, apt, city, img) {  
@@ -57,10 +72,6 @@ async function getAllCommunityTenants(community){
     const results = await query.find();
     const tenants = results.map(parseTenant => new UserModel(parseTenant));
     return tenants;
-}
-function loadActiveUser(){
-    UserModel.activeUser = Parse.User.current()? new UserModel(Parse.User.current()):null;
-    return UserModel.activeUser;
 }
 async function addTenant(fullName, email, pwd, community, apt, img){
     const user = new Parse.User()

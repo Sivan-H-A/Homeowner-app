@@ -19,10 +19,8 @@ export default function HomeownerNavbar({onLogout}) {
                     <Nav className="mr-auto">
                         {activeUser && activeUser.role === 1? <Nav.Link href="#/tenants">Tenants<IoIosPeople /></Nav.Link> : null}
                         {activeUser ? <Nav.Link href="#/messages">Messages<SiGooglemessages/></Nav.Link> : null}
-                        {/* community member */}
                     </Nav>
                     <Nav className="ml-auto">
-                        {/* {!activeUser ? <Nav.Link href="#/login">Login</Nav.Link> : null} */}
                         {!activeUser ? <Nav.Link href="#/signup">Signup</Nav.Link> : null}
                         {activeUser ? <Nav.Link eventKey="disabled" disabled>Welcome<GiHand /> 
                             {activeUser.fullName? activeUser.fullName.split(" ")[0]:""}</Nav.Link> :null}
