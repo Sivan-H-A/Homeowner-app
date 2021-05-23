@@ -80,6 +80,8 @@ export default function MessagesPage() {
                                         onReadMessage={handleReadMessage}/>           
         });
         loading=false;
+    }else{
+        loading= false;
     }
 
     function onClose(){

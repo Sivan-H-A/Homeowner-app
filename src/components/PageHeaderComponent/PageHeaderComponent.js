@@ -25,7 +25,7 @@ export default function PageHeaderComponent({placeholder,filterSelection,sortBy,
         <Form className="c-page-header">
             <Row>
                 <Col>               
-                    <Form.Control type="text" placeholder={placeholder} onChange={(e)=>onFilterChange(e.target.value)}/>
+                    {placeholder? <Form.Control type="text" placeholder={placeholder} onChange={(e)=>onFilterChange(e.target.value)}/>:null}
                 </Col>
                 {filterSelection ? 
                     <Col md={3} lg={2}>

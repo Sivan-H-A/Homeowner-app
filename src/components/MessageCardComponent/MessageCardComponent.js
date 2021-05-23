@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Accordion, Button, ButtonGroup, Card, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import CommentModel from '../../models/CommentModel';
 import './MessageCardComponent.css';
 import { FaArrowCircleRight } from 'react-icons/fa';
 import { IoIosMailOpen, IoIosMailUnread } from 'react-icons/io';
-export default function MessageCardComponent({message, index, activeUser, onUpdateMessage, onDeleteMessage, onNewCommentCreate, onReadMessage}) {
+import ActiveUserContext from '../../shared/ActiveUserContext';
+
+export default function MessageCardComponent({message, index, onUpdateMessage, onDeleteMessage, onNewCommentCreate, onReadMessage}) {
+    const activeUser = useContext(ActiveUserContext);
     const [comment,setComment] = useState("");
     const [readBy, setReadBy] = useState(false);
 

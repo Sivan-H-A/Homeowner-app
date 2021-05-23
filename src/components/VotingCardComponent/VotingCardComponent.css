@@ -1,0 +1,34 @@
+.c-voting{
+    text-align: left;
+}
+.p-voting-card>.row>.col>div{
+    text-align: left;
+}
+.p-voting-card>{
+    display: flex;
+    flex-direction: column;
+}
+.p-voting-card>.row{
+    margin-bottom: 20px;
+}
+@media (min-width: 576px) {
+    .c-voting-info{
+        display: flex;
+        flex-direction: column;
+        align-items:center;
+    }
+    .c-tenant > .collapse >.c-tenant-info> .card-body{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .c-tenant > .collapsing >.c-tenant-info> .card-body{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

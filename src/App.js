@@ -10,6 +10,7 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import SignupPage from './pages/SignupPage/SignupPage';
 import ActiveUserContext from './shared/ActiveUserContext'
 import BackendDataService from './utils/BackendDataService';
+import VotingPage from './pages/VotingPage/VotingPage';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route exact path="/signup"><SignupPage onLogin={user => setActiveUser(user)}/></Route> 
             <Route exact path="/dashboard"><DashboardPage/></Route>
             <Route exact path="/messages"><MessagesPage/></Route>
+            <Route exact path="/voting"><VotingPage/></Route>
             <Route path="/"><NotFoundPage/></Route>          
           </Switch>        
         </HashRouter>

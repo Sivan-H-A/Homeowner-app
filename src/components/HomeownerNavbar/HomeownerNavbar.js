@@ -6,6 +6,7 @@ import { BsBuilding } from 'react-icons/bs';
 import { GiHand } from 'react-icons/gi'
 import { IoIosPeople , IoIosLogOut, IoIosCreate} from 'react-icons/io'
 import { SiGooglemessages } from 'react-icons/si'
+import { GiVote } from 'react-icons/gi'
 export default function HomeownerNavbar({onLogout}) {
     const activeUser = useContext(ActiveUserContext);
 
@@ -18,6 +19,7 @@ export default function HomeownerNavbar({onLogout}) {
                     <Nav className="mr-auto">
                         {activeUser && activeUser.role === 1? <Nav.Link href="#/tenants">Tenants<IoIosPeople /></Nav.Link> : null}
                         {activeUser ? <Nav.Link href="#/messages">Messages<SiGooglemessages/></Nav.Link> : null}
+                        {activeUser ? <Nav.Link href="#/voting">Voting<GiVote/></Nav.Link> : null}
                     </Nav>
                     <Nav className="ml-auto">
                         {!activeUser ? <Nav.Link href="#/signup">Signup<IoIosCreate/></Nav.Link> : null}

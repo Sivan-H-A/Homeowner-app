@@ -3,6 +3,7 @@ import CommunityModel from '../models/CommunityModel';
 import UserModel from '../models/UserModel';
 import image from '../assets/person.png';
 import MessageModel from '../models/MessageModel';
+import VotingModel from '../models/VotingModel';
 
 async function login(email, pwd){
     if(email && pwd){
@@ -203,9 +204,78 @@ async function addUserReadMessage(message, userId){
     const newParseMessage = await parseMessage.save();
     return new MessageModel(newParseMessage);
 }
+async function getAllCommunityVoting(community){
+    const query = new Parse.Query('Voting');
+    query.equalTo('community', community);
+    const results = await query.find();
+    const voting = results.map(parseVoting => new VotingModel(parseVoting));
+    return voting;
+}
+async function addVoting(title, details,options,dueDate){
+    const Voting = Parse.Object.extend('Voting');
+    const newVoting = new Voting();
+    
+    newVoting.set('createdBy', Parse.User.current());
+    newVoting.set('title', title);
+    newVoting.set('details', details);
+    newVoting.set('options', options);
+    newVoting.set('dueDate', dueDate);
+    newVoting.set('community', UserModel.activeUser.community);  
+  
+    const parseVoting = await newVoting.save();
+
+    return new VotingModel(parseVoting);
+
+}
+async function changeVotingDate(voting, dueDate ){
+    const query = new Parse.Query('Voting');
+    const parseVoting = await query.get(voting.id);
+    parseVoting.set('dueDate', dueDate);
+
+    const newParseVoting = await parseVoting.save();
+    return new VotingModel(newParseVoting);
+}
+async function addUserVoting(voting, userVote){
+    const query = new Parse.Query('Voting');
+    const parseVoting = await query.get(voting.id);
+    const votes = parseVoting.get("votes");
+
+    // const newVotes =null;
+    if(votes&& votes.length>0){
+        // newVotes = newVotes.concat(votes);
+        const index = votes.findIndex(x=>x.user.id===userVote.user.id);
+        if(index>=0){
+            votes.splice(index,1, userVote);
+        }else{
+            votes.push(userVote);
+        }
+        parseVoting.set("votes",votes);
+    }else{
+        const tmp = [];
+        tmp.push(userVote);
+        parseVoting.set("votes",tmp);
+    }   
+    const newParseVoting = await parseVoting.save();
+    return new VotingModel(newParseVoting);
+}
+async function getCommunityUsers(community){
+    const query = new Parse.Query('Community');
+    query.equalTo('objectId', community.id);
+    const results = await query.find();
+    var query2 = new Parse.Query('User');
+    query2.equalTo('community', results[0]);
+    const results2 = await query2.find();
+    return results2.map(parseTenant => new UserModel(parseTenant));
+}
+async function getCommunityName(community){
+    const query = new Parse.Query('Community');
+    query.equalTo('objectId', community.id);
+    const results = await query.find();
+    return results[0].get("name");
+}
 export default  {login,signup, getAllCommunityTenants, 
-                loadActiveUser, addTenant, 
-                updateTenant, deleteTenant, 
-                getAllCommunityMessages, addNewMessage,
-                addNewComment,updateMessage,
-                deleteMessage, addUserReadMessage } 
+                loadActiveUser, addTenant, updateTenant, deleteTenant, 
+                getAllCommunityMessages, addNewMessage, addNewComment,
+                updateMessage, deleteMessage, addUserReadMessage,
+                getAllCommunityVoting, addVoting ,changeVotingDate,
+                addUserVoting, getCommunityUsers, getCommunityName} 
