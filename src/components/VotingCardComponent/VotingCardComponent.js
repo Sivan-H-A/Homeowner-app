@@ -90,41 +90,41 @@ export default function VotingCardComponent({voting, index, communityUsers,onUpd
                 <div className="p-voting-info">
                     <Card.Body className="p-voting-card">      
                         <Row>                    
-                            <Col md={2}>
+                            <Col md={2} sm={3}>
                                 <h6>Details:</h6>
                             </Col>
-                            <Col md={7}>
+                            <Col md={7} sm={9}>
                                 <Card.Text>{voting.details}</Card.Text>
                             </Col>                     
                         </Row>                         
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} sm={3}>
                                 <h6>Options:</h6>
                             </Col>                               
-                            <Col md={4}>
+                            <Col md={4} sm={4}>
                                 <Form>
                                     {optionsRadio}
                                 </Form>
                             </Col>
-                            <Col md={4}>
+                            <Col md={4} sm={5}>
                                 {!disable ? <Button onClick={onVoteChose}>Vote</Button>:null}
                                 { userVoting? <Card.Text>You Chose: {userVoting}</Card.Text>:null}
                             </Col>
                             
                         </Row>                       
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} sm={3}>
                                 <h6>End Date:</h6>
                             </Col>
-                            <Col md={4}>
+                            <Col md={4} sm={4}>
                                 <Card.Text>{votingDueDate}</Card.Text>
                             </Col>
-                            <Col md={4}>
+                            <Col md={4} sm={5}>
                                 {activeUser.role===1 && !disable ? <Button onClick={()=>onUpdateDate(index)}>Update End Date</Button>:null}
                             </Col>
                         </Row> 
                         
-                        {data ? <Col md={6}>
+                        {data ? <Col md={6} sm={9}>
                                     <Pie data={data} /> 
                                 </Col> 
                         :null}

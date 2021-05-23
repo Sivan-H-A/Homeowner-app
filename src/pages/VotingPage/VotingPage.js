@@ -151,7 +151,7 @@ export default function VotingPage() {
                 :
                 <div className="p-voting-info">
                     {activeVotingsCards.length>0 ? 
-                        <div style={{width:"50%"}}>
+                        <div>
                             <h3>Active Voting</h3>
                             <Accordion>
                                 {activeVotingsCards}

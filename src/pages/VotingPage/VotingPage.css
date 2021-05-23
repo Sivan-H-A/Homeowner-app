@@ -7,10 +7,16 @@
 }
 .p-voting-info{
     display:flex;
-    width: 100%;
-    justify-content: space-evenly;
+    flex-direction: column;
 }
-.p-voting-info>div{
-    width: 50%;
-    margin:2px;
+@media (min-width: 992px) {
+    .p-voting-info{
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+    .p-voting-info>div{
+        width: 50%;
+        margin:2px;
+    }
 }
